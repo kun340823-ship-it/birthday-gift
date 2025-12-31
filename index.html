@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>给你的生日礼物 🎁</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(180deg, #ffe6f0, #fff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    .box {
+      text-align: center;
+      cursor: pointer;
+    }
+    .gift {
+      font-size: 100px;
+      animation: shake 1.2s infinite;
+    }
+    @keyframes shake {
+      0% { transform: rotate(0deg); }
+      25% { transform: rotate(5deg); }
+      50% { transform: rotate(0deg); }
+      75% { transform: rotate(-5deg); }
+      100% { transform: rotate(0deg); }
+    }
+    .tip {
+      color: #ff6fa1;
+      margin-top: 12px;
+      font-size: 16px;
+    }
+    .card {
+      display: none;
+      background: white;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      max-width: 280px;
+      animation: fadeIn 0.6s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .card h2 {
+      color: #ff6fa1;
+      margin-bottom: 12px;
+    }
+    .card p {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box" id="box" onclick="openGift()">
+  <div class="gift">🎁</div>
+  <div class="tip">点我一下呀～</div>
+</div>
+
+<div class="card" id="card">
+  <h2>生日快乐呀 🎂</h2>
+  <p>
+    今天是一个特别特别的日子～<br><br>
+    希望你每天都能开开心心的，<br>
+    想吃就吃，想笑就笑 ✨<br><br>
+    新的一岁，<br>
+    继续可爱，继续闪闪发光 🌟
+  </p>
+</div>
+
+<script>
+  function openGift() {
+    document.getElementById("box").style.display = "none";
+    document.getElementById("card").style.display = "block";
+  }
+</script>
+
+</body>
+</html>
