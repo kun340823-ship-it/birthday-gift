@@ -1,86 +1,208 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>给你的生日礼物 🎁</title>
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background: linear-gradient(180deg, #ffe6f0, #fff);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
-    }
-    .box {
-      text-align: center;
-      cursor: pointer;
-    }
-    .gift {
-      font-size: 100px;
-      animation: shake 1.2s infinite;
-    }
-    @keyframes shake {
-      0% { transform: rotate(0deg); }
-      25% { transform: rotate(5deg); }
-      50% { transform: rotate(0deg); }
-      75% { transform: rotate(-5deg); }
-      100% { transform: rotate(0deg); }
-    }
-    .tip {
-      color: #ff6fa1;
-      margin-top: 12px;
-      font-size: 16px;
-    }
-    .card {
-      display: none;
-      background: white;
-      padding: 24px;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      max-width: 280px;
-      animation: fadeIn 0.6s ease;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
-    }
-    .card h2 {
-      color: #ff6fa1;
-      margin-bottom: 12px;
-    }
-    .card p {
-      font-size: 15px;
-      line-height: 1.6;
-      color: #444;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>给你的一点心意</title>
+
+<style>
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  font-family:"PingFang SC","Microsoft YaHei",sans-serif;
+  background: linear-gradient(135deg,#ffd6e8,#ffeef6);
+}
+
+.container{
+  width:100%;
+  height:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  text-align:center;
+  color:#ff5f9e;
+}
+
+.content{ z-index:2; }
+
+/* 🎁 礼物盒 */
+.gift-box{
+  width:180px;
+  height:120px;
+  background:#ff7eb9;
+  border-radius:12px;
+  position:relative;
+  cursor:pointer;
+  animation: float 2.5s ease-in-out infinite;
+  box-shadow:0 20px 40px rgba(0,0,0,.15);
+}
+
+.gift-box::before{
+  content:"";
+  position:absolute;
+  width:100%;
+  height:40px;
+  background:#ff65a3;
+  top:-30px;
+  left:0;
+  border-radius:12px 12px 6px 6px;
+}
+
+.ribbon{
+  position:absolute;
+  width:24px;
+  height:100%;
+  background:#fff;
+  left:50%;
+  transform:translateX(-50%);
+}
+
+.ribbon::before{
+  content:"";
+  position:absolute;
+  width:100%;
+  height:24px;
+  background:#fff;
+  top:50%;
+  transform:translateY(-50%);
+}
+
+@keyframes float{
+  0%,100%{ transform:translateY(0); }
+  50%{ transform:translateY(-12px); }
+}
+
+/* 图片 */
+img{
+  max-width:70%;
+  max-height:70%;
+  border-radius:18px;
+  box-shadow:0 15px 40px rgba(0,0,0,.25);
+  display:none;
+}
+
+/* 文字 */
+.text{
+  font-size:24px;
+  line-height:1.7;
+  display:none;
+  padding:20px;
+}
+
+.big-text{
+  font-size:56px;
+  font-weight:700;
+  display:none;
+  color:#ff4f9a;
+  padding:20px;
+}
+
+/* ✨ 星星粒子 */
+canvas{
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:1;
+}
+</style>
 </head>
+
 <body>
 
-<div class="box" id="box" onclick="openGift()">
-  <div class="gift">🎁</div>
-  <div class="tip">点我一下呀～</div>
-</div>
+<canvas id="stars"></canvas>
 
-<div class="card" id="card">
-  <h2>生日快乐呀 🎂</h2>
-  <p>
-    今天是一个特别特别的日子～<br><br>
-    希望你每天都能开开心心的，<br>
-    想吃就吃，想笑就笑 ✨<br><br>
-    新的一岁，<br>
-    继续可爱，继续闪闪发光 🌟
-  </p>
+<div class="container content" onclick="nextStep()">
+
+  <div id="gift" class="gift-box">
+    <div class="ribbon"></div>
+  </div>
+
+  <div id="hint" class="text"></div>
+
+  <img id="img1" src="img1.jpg" onerror="this.dataset.fail=1;">
+  <img id="img2" src="img2.jpg" onerror="this.dataset.fail=1;">
+
+  <div id="text" class="text">
+    🎂 生日快乐呀<br>
+    希望你每天都能开心<br>
+    被温柔和好运包围 ✨
+  </div>
+
+  <div id="bigText" class="big-text">
+    【这里写你最后那一句】
+  </div>
+
 </div>
 
 <script>
-  function openGift() {
-    document.getElementById("box").style.display = "none";
-    document.getElementById("card").style.display = "block";
+let step = 0;
+
+function hideAll(){
+  ["gift","hint","img1","img2","text","bigText"].forEach(id=>{
+    document.getElementById(id).style.display="none";
+  });
+}
+
+function nextStep(){
+  step++;
+  hideAll();
+
+  if(step === 1){
+    hint.innerHTML = "✨ 礼物正在打开…<br>再点一下 ✨";
+    hint.style.display = "block";
   }
+  else if(step === 2){
+    if(!img1.dataset.fail){
+      img1.style.display = "block";
+    } else {
+      hint.innerHTML = "🎀 有一张照片想给你<br>再点一下～";
+      hint.style.display = "block";
+    }
+  }
+  else if(step === 3){
+    if(!img2.dataset.fail){
+      img2.style.display = "block";
+    } else {
+      hint.innerHTML = "💗 还有一点点内容<br>继续点～";
+      hint.style.display = "block";
+    }
+  }
+  else if(step === 4){
+    text.style.display = "block";
+  }
+  else{
+    bigText.style.display = "block";
+  }
+}
+
+/* ✨ 星星粒子 */
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+
+const stars = Array.from({length:90},()=>({
+  x:Math.random()*canvas.width,
+  y:Math.random()*canvas.height,
+  r:Math.random()*1.8+0.8,
+  dy:Math.random()*0.4+0.2
+}));
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="rgba(255,255,255,0.9)";
+  stars.forEach(s=>{
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fill();
+    s.y+=s.dy;
+    if(s.y>canvas.height) s.y=0;
+  });
+  requestAnimationFrame(draw);
+}
+draw();
 </script>
 
 </body>
