@@ -23,9 +23,9 @@ html,body{
   flex-direction:column;
   text-align:center;
   color:#ff5f9e;
+  position:relative;
+  z-index:2;
 }
-
-.content{ z-index:2; }
 
 /* 🎁 礼物盒 */
 .gift-box{
@@ -85,10 +85,19 @@ img{
 
 /* 文字 */
 .text{
-  font-size:24px;
-  line-height:1.7;
+  font-size:22px;
+  line-height:1.9;
   display:none;
-  padding:20px;
+  padding:24px;
+}
+
+.text h2{
+  font-size:30px;
+  margin-bottom:16px;
+}
+
+.text p{
+  margin:0;
 }
 
 .big-text{
@@ -99,12 +108,13 @@ img{
   padding:20px;
 }
 
-/* ✨ 星星粒子 */
+/* ✨ 星星粒子（不挡点击） */
 canvas{
   position:absolute;
   top:0;
   left:0;
   z-index:1;
+  pointer-events:none;
 }
 </style>
 </head>
@@ -113,7 +123,7 @@ canvas{
 
 <canvas id="stars"></canvas>
 
-<div class="container content" onclick="nextStep()">
+<div class="container" onclick="nextStep()">
 
   <div id="gift" class="gift-box">
     <div class="ribbon"></div>
@@ -124,14 +134,20 @@ canvas{
   <img id="img1" src="img1.jpg" onerror="this.dataset.fail=1;">
   <img id="img2" src="img2.jpg" onerror="this.dataset.fail=1;">
 
+  <!-- 🎂 祝福语（已帮你换好） -->
   <div id="text" class="text">
-    🎂 生日快乐呀<br>
-    希望你每天都能开心<br>
-    被温柔和好运包围 ✨
+    <h2>生日快乐呀 🎂</h2>
+    <p>
+      今天是一个特别特别的日子～<br><br>
+      希望你每天都能开开心心的，<br>
+      想吃就吃，想笑就笑 ✨<br><br>
+      新的一岁，<br>
+      继续闪闪发光 🌟
+    </p>
   </div>
 
   <div id="bigText" class="big-text">
-    【这里写你最后那一句】
+    【礼物在驿站喽<br>取件码:101-1-8786】
   </div>
 
 </div>
